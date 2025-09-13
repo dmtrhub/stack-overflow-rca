@@ -35,6 +35,9 @@ const Navbar = () => {
                 <Link to={`/profile/${userId}`} className="hover:text-cyan-300">Profile</Link>
               </li>
               <li>
+                <Link to={`/modifyProfile/${userId}`} className="hover:text-cyan-300">Modify Profile</Link>
+              </li>
+              <li>
                 <button
                   onClick={handleLogout}
                   className="hover:text-red-400 transition-colors"

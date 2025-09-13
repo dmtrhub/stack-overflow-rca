@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.UI.WebControls;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
@@ -21,8 +20,9 @@ namespace StackOverflowService_WebRole.App_Start
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = System.Web.Http.RouteParameter.Optional }
+                defaults: new { id = RouteParameter.Optional }
             );
+
         }
     }
 }

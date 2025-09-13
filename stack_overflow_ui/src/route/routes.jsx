@@ -2,6 +2,8 @@ import React, { Children } from "react";
 import { Route, Navigate } from "react-router-dom";
 import { isAuthenticated } from "../services/AuthService";
 import DefaultLayout from "../components/DefaultLayout";
+import Questions from "../components/Questions";
+import Profile from "../components/Profile";
 const HomePage = React.lazy(() => import("../pages/HomePage"));
 const ModifyProfilePage = React.lazy(() => import("../pages/ModifyProfilePage"));
 const AnswerPage = React.lazy(() => import("../pages/AnswerPage"));
@@ -58,6 +60,22 @@ export const routes = (
             element={
                 <PrivateRoute>
                     <ModifyQuestionPage />
+                </PrivateRoute>
+            }
+        />
+        <Route
+            path="ask"
+            element={
+                <PrivateRoute>
+                    <Questions/>
+                </PrivateRoute>
+            }
+        />
+        <Route
+            path="my-questions"
+            element={
+                <PrivateRoute>
+                    <Profile/>
                 </PrivateRoute>
             }
         />

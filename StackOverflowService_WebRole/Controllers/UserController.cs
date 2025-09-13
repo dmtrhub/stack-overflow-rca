@@ -103,6 +103,7 @@ namespace StackOverflowService_WebRole.Controllers
             {
                 var identity = (ClaimsIdentity)User.Identity;
                 var email = identity.FindFirst(ClaimTypes.Email)?.Value;
+                //var email = identity.FindFirst("email")?.Value;
                 if (string.IsNullOrEmpty(email))
                     return Unauthorized();
 

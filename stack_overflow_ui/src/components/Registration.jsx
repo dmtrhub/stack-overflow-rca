@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { registerUser } from "../services/UserService";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const initialFormData = {
@@ -24,6 +25,8 @@ const Register = () => {
     password: "",
     profileImage: "",
   };
+
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState(initialFormData);
   const [errors, setErrors] = useState(initialErrors);
@@ -93,6 +96,7 @@ const Register = () => {
         setFormData(initialFormData);
         setErrors(initialErrors);
         setImagePreview(null);
+        navigate("/login");
       }
     } catch (error) {
       setMessage({
