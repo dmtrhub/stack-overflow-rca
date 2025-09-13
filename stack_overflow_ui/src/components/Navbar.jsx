@@ -1,10 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import {
-  isAuthenticated,
-  getUserIdFromToken,
-  removeToken
-} from '../services/AuthService';
+import { isAuthenticated, getUserIdFromToken, removeToken } from '../services/AuthService';
 
 const Navbar = () => {
   const navigate = useNavigate();

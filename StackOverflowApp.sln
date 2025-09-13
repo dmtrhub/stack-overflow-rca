@@ -15,6 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthMonitoringService", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{DFAB832C-DFA1-41E0-9C14-A7FEAC079212}"
 EndProject
+Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "StackOverflowApp", "StackOverflowApp\StackOverflowApp.ccproj", "{1AD7604E-BE2D-480A-8D94-F60651912308}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StackOverflowService_WebRole", "StackOverflowService_WebRole\StackOverflowService_WebRole.csproj", "{F15FB801-512B-402C-A0D8-DA3A033FEF5B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +49,14 @@ Global
 		{DFAB832C-DFA1-41E0-9C14-A7FEAC079212}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DFAB832C-DFA1-41E0-9C14-A7FEAC079212}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DFAB832C-DFA1-41E0-9C14-A7FEAC079212}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1AD7604E-BE2D-480A-8D94-F60651912308}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AD7604E-BE2D-480A-8D94-F60651912308}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1AD7604E-BE2D-480A-8D94-F60651912308}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AD7604E-BE2D-480A-8D94-F60651912308}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F15FB801-512B-402C-A0D8-DA3A033FEF5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F15FB801-512B-402C-A0D8-DA3A033FEF5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F15FB801-512B-402C-A0D8-DA3A033FEF5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F15FB801-512B-402C-A0D8-DA3A033FEF5B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

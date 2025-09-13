@@ -116,7 +116,37 @@ const Register = () => {
         className="space-y-5"
       >
         {/* Profile Image Upload */}
-        <div>
+        {
+          <div>
+            <label className="block font-semibold mb-1">Profile Image</label>
+
+            <input
+              id="profileImage"
+              type="file"
+              name="profileImage"
+              accept="image/*"
+              onChange={handleChange}
+              className="hidden"
+            />
+
+            <label
+              htmlFor="profileImage"
+              className="inline-block bg-blue-600 text-white px-4 py-2 rounded cursor-pointer hover:bg-blue-700 transition"
+            >
+              Choose Image
+            </label>
+
+            {imagePreview && (
+              <img
+                src={imagePreview}
+                alt="Preview"
+                className="mt-4 w-32 h-32 object-cover rounded-full"
+              />
+            )}
+
+            <p className="text-red-500 text-sm mt-1">{errors.profileImage}</p>
+          </div>
+        /* <div>
           <label className="block font-semibold">Profile Image</label>
           <input
             type="file"
@@ -133,7 +163,7 @@ const Register = () => {
             />
           )}
           <p className="text-red-500 text-sm mt-1">{errors.profileImage}</p>
-        </div>
+        </div> */}
 
         {/* Full Name */}
         <div>
@@ -234,9 +264,8 @@ const Register = () => {
 
         {message.text && (
           <p
-            className={`text-sm mt-4 text-center ${
-              message.type === "success" ? "text-green-600" : "text-red-600"
-            }`}
+            className={`text-sm mt-4 text-center ${message.type === "success" ? "text-green-600" : "text-red-600"
+              }`}
           >
             {message.text}
           </p>
