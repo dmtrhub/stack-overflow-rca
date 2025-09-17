@@ -28,14 +28,18 @@ namespace Data.Repositories
 
         public async Task<List<HealthCheck>> RetrieveAllHealthChecksAsync(DateTime fromTime)
         {
-            TableQuery<HealthCheck> query = new TableQuery<HealthCheck>();
             var allEntities = new List<HealthCheck>();
             TableContinuationToken token = null;
+
+            string filter = TableQuery.GenerateFilterConditionForDate(
+                "Timestamp", QueryComparisons.GreaterThanOrEqual, fromTime);
+
+            var query = new TableQuery<HealthCheck>().Where(filter);
 
             do
             {
                 var segment = await _table.ExecuteQuerySegmentedAsync(query, token);
-                allEntities.AddRange(segment.Results.Where(e => e.TimestampUtc >= fromTime));
+                allEntities.AddRange(segment.Results);
                 token = segment.ContinuationToken;
             } while (token != null);
 

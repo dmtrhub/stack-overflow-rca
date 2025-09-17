@@ -12,6 +12,7 @@ namespace Data.Entities
         {
             PartitionKey = "AlertEmails";
             RowKey = email;
+            Email = email;
         }
 
         public string Email { get; set; }

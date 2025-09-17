@@ -12,10 +12,8 @@ namespace Data.Entities
         {
             PartitionKey = serviceName;
             RowKey = timestamp.Ticks.ToString();
-            TimestampUtc = timestamp;
         }
 
-        public DateTime TimestampUtc { get; set; }
         public string Status { get; set; }
         public string ServiceName { get; set; }
     }

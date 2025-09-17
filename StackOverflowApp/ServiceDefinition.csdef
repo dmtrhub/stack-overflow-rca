@@ -13,7 +13,7 @@
 			<InputEndpoint name="Endpoint1" protocol="http" port="80" />
 		</Endpoints>
 	</WebRole>
-	<WorkerRole name="HealthMonitoringService_WorkerRole" vmsize="Standard_D1_v2">
+	<WorkerRole name="HealthMonitoringService" vmsize="Standard_D1_v2">
 		<ConfigurationSettings>
 			<Setting name="DataConnectionString" />
 		</ConfigurationSettings>

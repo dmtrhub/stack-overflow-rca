@@ -1,13 +1,13 @@
-﻿using Microsoft.WindowsAzure.ServiceRuntime;
+﻿using Data.Entities;
+using Data.Helpers;
+using Data.Repositories;
+using Microsoft.WindowsAzure.ServiceRuntime;
 using System;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using Data.Repositories;
-using Data.Entities;
-using Data.Helpers;
 
-namespace HealthMonitoringService_WorkerRole
+namespace HealthMonitoringService
 {
     public class WorkerRole : RoleEntryPoint
     {
@@ -24,6 +24,9 @@ namespace HealthMonitoringService_WorkerRole
             _healthRepo = new HealthCheckRepository(_connectionString);
             _alertRepo = new AlertEmailRepository(_connectionString);
 
+            var apiServer = new AdminApiServer("http://localhost:5003/", _alertRepo);
+            apiServer.Start();
+
             _httpClient = new HttpClient();
 
             // Timer na 4 sekunde
@@ -36,8 +39,8 @@ namespace HealthMonitoringService_WorkerRole
         {
             string[] serviceUrls = new string[]
             {
-                "http://localhost:80/health-monitoring", // StackOverflowService Web Role
-                "http://localhost:81/health-monitoring"  // NotificationService Worker Role
+                "http://localhost:51400", // StackOverflowService Web Role
+                // NotificationService Worker Role
             };
 
             foreach (var url in serviceUrls)
@@ -50,6 +53,7 @@ namespace HealthMonitoringService_WorkerRole
                     // Timeout 3 sekunde da ne visi
                     var cts = new CancellationTokenSource(TimeSpan.FromSeconds(3));
                     var response = await _httpClient.GetAsync(url, cts.Token);
+                    Console.WriteLine($"{url} -> {(int)response.StatusCode} {response.ReasonPhrase}");
                     if (!response.IsSuccessStatusCode)
                         status = "NOT_OK";
                 }
@@ -73,11 +77,10 @@ namespace HealthMonitoringService_WorkerRole
             }
         }
 
-        // Pomoćna funkcija za izdvajanje imena servisa iz URL-a
         private string GetServiceNameFromUrl(string url)
         {
-            if (url.Contains("80")) return "StackOverflowService";
-            if (url.Contains("81")) return "NotificationService";
+            if (url.Contains("51400")) return "StackOverflowService";
+            //if (url.Contains()) return "NotificationService";
             return "UnknownService";
         }
 
@@ -88,7 +91,7 @@ namespace HealthMonitoringService_WorkerRole
             {
                 string subject = $"[ALERT] {service} DOWN";
                 string body = $"Servis {service} nije dostupan. Proverite status.";
-                EmailHelper.SendEmail(email, subject, body);
+                await EmailHelper.SendEmailAsync(email, subject, body);
             }
         }
 
