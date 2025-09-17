@@ -1,0 +1,41 @@
+﻿using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Table;
+using StackOverflowApp_Data.Entities;
+
+namespace StackOverflowApp_Data.Repositories
+{
+    public class HealthCheckRepository
+    {
+        private CloudTable _table;
+
+        public HealthCheckRepository(string connectionString)
+        {
+            var storageAccount = CloudStorageAccount.Parse(connectionString);
+            var tableClient = storageAccount.CreateCloudTableClient();
+            _table = tableClient.GetTableReference("HealthCheck");
+            _table.CreateIfNotExistsAsync().Wait();
+        }
+
+        public async Task InsertHealthCheckAsync(HealthCheck entity)
+        {
+            var insertOperation = TableOperation.Insert(entity);
+            await _table.ExecuteAsync(insertOperation);
+        }
+
+        public async Task<List<HealthCheck>> RetrieveAllHealthChecksAsync(DateTime fromTime)
+        {
+            TableQuery<HealthCheck> query = new TableQuery<HealthCheck>();
+            var allEntities = new List<HealthCheck>();
+            TableContinuationToken token = null;
+
+            do
+            {
+                var segment = await _table.ExecuteQuerySegmentedAsync(query, token);
+                allEntities.AddRange(segment.Results.Where(e => e.TimestampUtc >= fromTime));
+                token = segment.ContinuationToken;
+            } while (token != null);
+
+            return allEntities;
+        }
+    }
+}

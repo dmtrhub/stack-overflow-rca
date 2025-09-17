@@ -7,21 +7,33 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Constants\**" />
+    <Compile Remove="DTOs\**" />
+    <Compile Remove="Enums\**" />
+    <Compile Remove="Interfaces\**" />
+    <Compile Remove="Models\**" />
+    <Compile Remove="Utilities\**" />
+    <EmbeddedResource Remove="Constants\**" />
+    <EmbeddedResource Remove="DTOs\**" />
+    <EmbeddedResource Remove="Enums\**" />
+    <EmbeddedResource Remove="Interfaces\**" />
+    <EmbeddedResource Remove="Models\**" />
+    <EmbeddedResource Remove="Utilities\**" />
+    <None Remove="Constants\**" />
+    <None Remove="DTOs\**" />
+    <None Remove="Enums\**" />
+    <None Remove="Interfaces\**" />
+    <None Remove="Models\**" />
+    <None Remove="Utilities\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Azure.Data.Tables" Version="12.11.0" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.3.0" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Cors" Version="5.3.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.8" />
     <PackageReference Include="Microsoft.WindowsAzure.ConfigurationManager" Version="3.2.3" />
     <PackageReference Include="WindowsAzure.Storage" Version="9.3.3" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Models\" />
-    <Folder Include="DTOs\" />
-    <Folder Include="Constants\" />
-    <Folder Include="Enums\" />
-    <Folder Include="Interfaces\" />
-    <Folder Include="Utilities\" />
   </ItemGroup>
 
 </Project>

@@ -4,4 +4,10 @@
     <Instances count="1" />
     <ConfigurationSettings />
   </Role>
+  <Role name="HealthMonitoringService_WorkerRole">
+    <Instances count="1" />
+    <ConfigurationSettings>
+      <Setting name="DataConnectionString" value="UseDevelopmentStorage=true" />
+    </ConfigurationSettings>
+  </Role>
 </ServiceConfiguration>

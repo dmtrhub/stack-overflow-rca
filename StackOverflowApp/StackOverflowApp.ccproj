@@ -39,6 +39,14 @@
     <ServiceConfiguration Include="ServiceConfiguration.Cloud.cscfg" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\HealthMonitoringService_WorkerRole\HealthMonitoringService_WorkerRole.csproj">
+      <Name>HealthMonitoringService_WorkerRole</Name>
+      <Project>{4cbfeb25-5f66-4283-8639-301bb9620aa0}</Project>
+      <Private>True</Private>
+      <RoleType>Worker</RoleType>
+      <RoleName>HealthMonitoringService_WorkerRole</RoleName>
+      <UpdateDiagnosticsConnectionStringOnPublish>True</UpdateDiagnosticsConnectionStringOnPublish>
+    </ProjectReference>
     <ProjectReference Include="..\StackOverflowService_WebRole\StackOverflowService_WebRole.csproj">
       <Name>StackOverflowService_WebRole</Name>
       <Project>{f15fb801-512b-402c-a0d8-da3a033fef5b}</Project>
@@ -49,9 +57,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="HealthMonitoringService_WorkerRoleContent\" />
     <Folder Include="StackOverflowService_WebRoleContent\" />
   </ItemGroup>
   <ItemGroup>
+    <DiagnosticsConfiguration Include="HealthMonitoringService_WorkerRoleContent\diagnostics.wadcfgx" />
     <DiagnosticsConfiguration Include="StackOverflowService_WebRoleContent\diagnostics.wadcfgx" />
   </ItemGroup>
   <!-- Import the target files for this project template -->
