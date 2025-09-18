@@ -45,5 +45,32 @@ namespace Data.Repositories
 
             return allEntities;
         }
+
+        public async Task<List<HealthCheck>> GetRecentHealthChecksAsync(string serviceName, TimeSpan timeSpan)
+        {
+            var allEntities = new List<HealthCheck>();
+            TableContinuationToken token = null;
+            DateTime fromTime = DateTime.UtcNow.Subtract(timeSpan);
+
+            // Filter po vremenu (Timestamp je automatski DateTimeOffset u TableEntity)
+            string timeFilter = TableQuery.GenerateFilterConditionForDate(
+                "Timestamp", QueryComparisons.GreaterThanOrEqual, fromTime);
+
+            string serviceFilter = TableQuery.GenerateFilterCondition(
+                "ServiceName", QueryComparisons.Equal, serviceName);
+
+            string combinedFilter = TableQuery.CombineFilters(timeFilter, TableOperators.And, serviceFilter);
+
+            var query = new TableQuery<HealthCheck>().Where(combinedFilter);
+
+            do
+            {
+                var segment = await _table.ExecuteQuerySegmentedAsync(query, token);
+                allEntities.AddRange(segment.Results);
+                token = segment.ContinuationToken;
+            } while (token != null);
+
+            return allEntities;
+        }
     }
 }

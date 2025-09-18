@@ -16,6 +16,26 @@
 	<WorkerRole name="HealthMonitoringService" vmsize="Standard_D1_v2">
 		<ConfigurationSettings>
 			<Setting name="DataConnectionString" />
+			<Setting name="SmtpHost" />
+			<Setting name="SmtpPort" />
+			<Setting name="SmtpUser" />
+			<Setting name="SmtpPass" />
+			<Setting name="FromAddress" />
 		</ConfigurationSettings>
 	</WorkerRole>
+	<WebRole name="HealthStatusService" vmsize="Standard_D1_v2">
+		<Sites>
+			<Site name="Web">
+				<Bindings>
+					<Binding name="Endpoint1" endpointName="Endpoint1" />
+				</Bindings>
+			</Site>
+		</Sites>
+		<ConfigurationSettings>
+			<Setting name="DataConnectionString" />
+		</ConfigurationSettings>
+		<Endpoints>
+			<InputEndpoint name="Endpoint1" protocol="http" port="82" />
+		</Endpoints>
+	</WebRole>
 </ServiceDefinition>

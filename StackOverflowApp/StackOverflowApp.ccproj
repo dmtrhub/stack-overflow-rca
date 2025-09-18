@@ -46,6 +46,14 @@
       <RoleType>Worker</RoleType>
       <RoleName>HealthMonitoringService</RoleName>
     </ProjectReference>
+    <ProjectReference Include="..\HealthStatusService\HealthStatusService.csproj">
+      <Name>HealthStatusService</Name>
+      <Project>{716cc51d-df47-48e1-821c-27fb676d63bc}</Project>
+      <Private>True</Private>
+      <RoleType>Web</RoleType>
+      <RoleName>HealthStatusService</RoleName>
+      <UpdateDiagnosticsConnectionStringOnPublish>True</UpdateDiagnosticsConnectionStringOnPublish>
+    </ProjectReference>
     <ProjectReference Include="..\StackOverflowService_WebRole\StackOverflowService_WebRole.csproj">
       <Name>StackOverflowService_WebRole</Name>
       <Project>{f15fb801-512b-402c-a0d8-da3a033fef5b}</Project>
@@ -57,10 +65,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="HealthMonitoringServiceContent" />
+    <Folder Include="HealthStatusServiceContent\" />
     <Folder Include="StackOverflowService_WebRoleContent\" />
   </ItemGroup>
   <ItemGroup>
     <DiagnosticsConfiguration Include="HealthMonitoringServiceContent\diagnostics.wadcfgx" />
+    <DiagnosticsConfiguration Include="HealthStatusServiceContent\diagnostics.wadcfgx" />
     <DiagnosticsConfiguration Include="StackOverflowService_WebRoleContent\diagnostics.wadcfgx" />
   </ItemGroup>
   <!-- Import the target files for this project template -->

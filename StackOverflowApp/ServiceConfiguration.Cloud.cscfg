@@ -8,6 +8,17 @@
 		<Instances count="2" />
 		<ConfigurationSettings>
 			<Setting name="DataConnectionString" value="UseDevelopmentStorage=true" />
+			<Setting name="SmtpHost" value="smtp.gmail.com" />
+			<Setting name="SmtpPort" value="587" />
+			<Setting name="SmtpUser" value="dmtr.faculty@gmail.com" />
+			<Setting name="SmtpPass" value="hafn rlyb qnae zbnt" />
+			<Setting name="FromAddress" value="dmtr.faculty@gmail.com" />
+		</ConfigurationSettings>
+	</Role>
+	<Role name="HealthStatusService">
+		<Instances count="1" />
+		<ConfigurationSettings>
+			<Setting name="DataConnectionString" value="UseDevelopmentStorage=true" />
 		</ConfigurationSettings>
 	</Role>
 	<NetworkConfiguration>
@@ -18,7 +29,12 @@
 					<Subnet name="WebTier" />
 				</Subnets>
 			</InstanceAddress>
-			<InstanceAddress roleName="HealthMonitoringService_WorkerRole">
+			<InstanceAddress roleName="HealthMonitoringService">
+				<Subnets>
+					<Subnet name="WebTier" />
+				</Subnets>
+			</InstanceAddress>
+			<InstanceAddress roleName="HealthStatusService">
 				<Subnets>
 					<Subnet name="WebTier" />
 				</Subnets>

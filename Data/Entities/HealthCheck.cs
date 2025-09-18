@@ -16,5 +16,13 @@ namespace Data.Entities
 
         public string Status { get; set; }
         public string ServiceName { get; set; }
+
+        public DateTime TimeStamp
+        {
+            get
+            {
+                return RowKey == null ? DateTime.MinValue : new DateTime(long.Parse(RowKey));
+            }
+        }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using Data.Entities;
-using Data.Helpers;
+using Data.Interfaces;
 using Data.Repositories;
 using Microsoft.WindowsAzure.ServiceRuntime;
 using System;
+using System.Diagnostics;
+using System.IO;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,10 +17,17 @@ namespace HealthMonitoringService
         private HealthCheckRepository _healthRepo;
         private AlertEmailRepository _alertRepo;
         private HttpClient _httpClient;
+        private IEmailService _emailService;
         private string _connectionString;
+        private readonly string rootPath = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\..\.."));
 
         public override bool OnStart()
         {
+            string logFilePath = Path.Combine(rootPath, "emails.log");
+            Trace.Listeners.Add(new TextWriterTraceListener(logFilePath));
+            Trace.Listeners.Add(new ConsoleTraceListener());
+            Trace.AutoFlush = true;
+
             _connectionString = RoleEnvironment.GetConfigurationSettingValue("DataConnectionString");
 
             _healthRepo = new HealthCheckRepository(_connectionString);
@@ -28,6 +37,14 @@ namespace HealthMonitoringService
             apiServer.Start();
 
             _httpClient = new HttpClient();
+
+            string host = RoleEnvironment.GetConfigurationSettingValue("SmtpHost");
+            int port = int.Parse(RoleEnvironment.GetConfigurationSettingValue("SmtpPort"));
+            string user = RoleEnvironment.GetConfigurationSettingValue("SmtpUser");
+            string pass = RoleEnvironment.GetConfigurationSettingValue("SmtpPass");
+            string from = RoleEnvironment.GetConfigurationSettingValue("FromAddress");
+
+            _emailService = new Data.Services.EmailService(host, port, user, pass, from);
 
             // Timer na 4 sekunde
             _timer = new Timer(async _ => await CheckServicesAsync(), null, TimeSpan.Zero, TimeSpan.FromSeconds(4));
@@ -91,7 +108,9 @@ namespace HealthMonitoringService
             {
                 string subject = $"[ALERT] {service} DOWN";
                 string body = $"Servis {service} nije dostupan. Proverite status.";
-                await EmailHelper.SendEmailAsync(email, subject, body);
+
+                await _emailService.SendEmailAsync(email, subject, body);
+                Trace.TraceInformation($"Email poslat: {email}, Subject: {subject}, Body: {body}");
             }
         }
 
