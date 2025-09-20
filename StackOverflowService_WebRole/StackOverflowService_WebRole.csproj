@@ -283,6 +283,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="AzureStorage\AnswerTableEntity.cs" />
+    <Compile Include="AzureStorage\NotificationLogTableEntity.cs" />
     <Compile Include="AzureStorage\QuestionTableEntity.cs" />
     <Compile Include="AzureStorage\UserTableEntity.cs" />
     <Compile Include="AzureStorage\VoteTableEntity.cs" />
@@ -312,6 +313,7 @@
     <Compile Include="Pomocni\QueueHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\AnswerRepository.cs" />
+    <Compile Include="Repositories\NotificationLogRepository.cs" />
     <Compile Include="Repositories\ProfilePictureBlobService.cs" />
     <Compile Include="Repositories\QuestionPictureBlobService.cs" />
     <Compile Include="Repositories\QuestionRepository.cs" />

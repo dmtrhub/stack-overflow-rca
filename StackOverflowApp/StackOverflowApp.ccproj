@@ -54,6 +54,14 @@
       <RoleName>HealthStatusService</RoleName>
       <UpdateDiagnosticsConnectionStringOnPublish>True</UpdateDiagnosticsConnectionStringOnPublish>
     </ProjectReference>
+    <ProjectReference Include="..\NotificationService1\NotificationService1.csproj">
+      <Name>NotificationService1</Name>
+      <Project>{9c66b220-d1d9-46db-8f70-db3974d8a176}</Project>
+      <Private>True</Private>
+      <RoleType>Worker</RoleType>
+      <RoleName>NotificationService1</RoleName>
+      <UpdateDiagnosticsConnectionStringOnPublish>True</UpdateDiagnosticsConnectionStringOnPublish>
+    </ProjectReference>
     <ProjectReference Include="..\StackOverflowService_WebRole\StackOverflowService_WebRole.csproj">
       <Name>StackOverflowService_WebRole</Name>
       <Project>{f15fb801-512b-402c-a0d8-da3a033fef5b}</Project>
@@ -66,11 +74,13 @@
   <ItemGroup>
     <Folder Include="HealthMonitoringServiceContent" />
     <Folder Include="HealthStatusServiceContent\" />
+    <Folder Include="NotificationService1Content\" />
     <Folder Include="StackOverflowService_WebRoleContent\" />
   </ItemGroup>
   <ItemGroup>
     <DiagnosticsConfiguration Include="HealthMonitoringServiceContent\diagnostics.wadcfgx" />
     <DiagnosticsConfiguration Include="HealthStatusServiceContent\diagnostics.wadcfgx" />
+    <DiagnosticsConfiguration Include="NotificationService1Content\diagnostics.wadcfgx" />
     <DiagnosticsConfiguration Include="StackOverflowService_WebRoleContent\diagnostics.wadcfgx" />
   </ItemGroup>
   <!-- Import the target files for this project template -->
