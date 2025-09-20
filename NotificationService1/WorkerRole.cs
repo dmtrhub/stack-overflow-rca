@@ -98,10 +98,10 @@ namespace NotificationService
 
                         // 4. Slanje emailova
                         string subject = $"Pitanje '{question.Title}' je zatvoreno";
-                        string body = $"Pitanje je uspešno zatvoreno.<br/><br/>" +
-                                      $"<b>Autor finalnog odgovora:</b> {bestAnswer.AnsweredByEmail}<br/>" +
-                                      $"<b>Tekst odgovora:</b><br/>" +
-                                      $"<p style='border-left: 2px solid #ccc; padding-left: 10px; margin-left: 5px;'>{bestAnswer.Description}</p>";
+                        string body = "Pitanje je uspešno zatvoreno.\n\n" +
+                        $"Autor finalnog odgovora: {bestAnswer.AnsweredByEmail}\n" +
+                        $"Tekst odgovora:\n" +
+                        $"{bestAnswer.Description}";
 
                         foreach (var email in userEmailsToNotify)
                         {
