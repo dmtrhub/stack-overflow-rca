@@ -57,7 +57,7 @@ namespace HealthMonitoringService
             string[] serviceUrls = new string[]
             {
                 "http://localhost:51400", // StackOverflowService Web Role
-                // NotificationService Worker Role
+                "http://localhost:8080/health-monitoring"  // NotificationService Worker Role
             };
 
             foreach (var url in serviceUrls)
@@ -97,7 +97,7 @@ namespace HealthMonitoringService
         private string GetServiceNameFromUrl(string url)
         {
             if (url.Contains("51400")) return "StackOverflowService";
-            //if (url.Contains()) return "NotificationService";
+            if (url.Contains("8080")) return "NotificationService";
             return "UnknownService";
         }
 
