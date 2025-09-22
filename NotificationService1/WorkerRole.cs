@@ -2,10 +2,10 @@
 using Data.Interfaces;
 using Data.Repositories;
 using Data.Services;
-using Microsoft.Azure; 
+using Microsoft.Azure;
 using Microsoft.WindowsAzure.ServiceRuntime;
-using Microsoft.WindowsAzure.Storage;         
-using Microsoft.WindowsAzure.Storage.Queue;   
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Queue;
 using StackOverflowService_WebRole.AzureStorage;
 using StackOverflowService_WebRole.Repositories;
 using System;
@@ -141,7 +141,7 @@ namespace NotificationService
             {
                 var endpoint = RoleEnvironment.CurrentRoleInstance.InstanceEndpoints["HealthCheckEndpoint"];
                 var listener = new HttpListener();
-                listener.Prefixes.Add($"{endpoint.Protocol}://*:{endpoint.IPEndpoint.Port}/health-monitoring/");
+                listener.Prefixes.Add($"{endpoint.Protocol}://localhost:{endpoint.IPEndpoint.Port}/health-monitoring/");
                 listener.Start();
 
                 Task.Run(async () =>
@@ -168,4 +168,3 @@ namespace NotificationService
         }
     }
 }
-
