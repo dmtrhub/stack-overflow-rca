@@ -1,8 +1,8 @@
 import React from "react";
-import Answers from "../components/Answers/Answers";
+import Answer from "../components/Answer";
 
 const AnswersPage = () => {
-  return <Answers />;
+  return <Answer />;
 };
 
 export default AnswersPage;

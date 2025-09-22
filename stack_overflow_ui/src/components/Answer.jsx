@@ -11,10 +11,10 @@ import {
   voteForAnswer,
   unvoteAnswer,
   hasUserVoted,
-} from "../../services/VoteService";
+} from "../services/VoteService";
 
-import {faStar as solidStar} from "@fortawesome/free-solid-svg-icons";
-import {faStar as regularStar} from "@fortawesome/free-regular-svg-icons";
+import { faStar as solidStar } from "@fortawesome/free-solid-svg-icons";
+import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart as solidHeart } from "@fortawesome/free-solid-svg-icons";
@@ -31,7 +31,6 @@ const Answer = () => {
   const [votedAnswers, setVotedAnswers] = useState({});
   const [sortByVotes, setSortByVotes] = useState(null);
   const loggedUserEmail = getUserEmailFromToken();
-
 
   const checkVotes = async (answers) => {
     const results = {};
@@ -134,11 +133,11 @@ const Answer = () => {
   };
 
   const handleCloseQuestion = async (answerId) => {
-  const success = await closeQuestion(question.id, answerId);
-  if (success) {
-    setQuestion({ ...question, isClosed: true, topAnswerId: answerId });
-  }
-};
+    const success = await closeQuestion(question.id, answerId);
+    if (success) {
+      setQuestion({ ...question, isClosed: true, topAnswerId: answerId });
+    }
+  };
 
   return (
     <div className="mt-36 max-w-2xl mx-auto">
@@ -163,8 +162,8 @@ const Answer = () => {
         disabled={question?.isClosed}
         className={`mb-6 px-4 py-2 text-white rounded ${
           question?.isClosed
-          ? "bg-gray-400 cursor-not-allowed"
-          : "bg-blue-600 hover:bg-blue-700"
+            ? "bg-gray-400 cursor-not-allowed"
+            : "bg-blue-600 hover:bg-blue-700"
         }`}
         title={question?.isClosed ? "Question is closed" : ""}
       >
@@ -205,7 +204,6 @@ const Answer = () => {
       </div>
 
       {answers.map((answer) => (
-        
         <div
           key={answer.id}
           className="mb-4 p-4 border rounded shadow flex justify-between items-start"
@@ -233,21 +231,23 @@ const Answer = () => {
             </button>
             <span className="text-sm mt-1">{answer.numberOfVotes}</span>
 
-            {question && question.createdBy === loggedUserEmail && (!question.isClosed ? (
-              <button
-                onClick={() => handleCloseQuestion(answer.id)}
-                className="mt-2 text-gray-500 hover:text-yellow-600 transition-colors"
-                title="Mark as Top Answer & Close Question"
+            {question &&
+              question.createdBy === loggedUserEmail &&
+              (!question.isClosed ? (
+                <button
+                  onClick={() => handleCloseQuestion(answer.id)}
+                  className="mt-2 text-gray-500 hover:text-yellow-600 transition-colors"
+                  title="Mark as Top Answer & Close Question"
                 >
-                <FontAwesomeIcon icon={regularStar} className="text-xl" />
-              </button>
-                ) : (question.topAnswerId === answer.id &&(
-              <span className="mt-2 text-yellow-500" title="Top Answer">
-                <FontAwesomeIcon icon={solidStar} className="text-xl" />
-              </span>
+                  <FontAwesomeIcon icon={regularStar} className="text-xl" />
+                </button>
+              ) : (
+                question.topAnswerId === answer.id && (
+                  <span className="mt-2 text-yellow-500" title="Top Answer">
+                    <FontAwesomeIcon icon={solidStar} className="text-xl" />
+                  </span>
                 )
-              )
-            )}
+              ))}
           </div>
         </div>
       ))}

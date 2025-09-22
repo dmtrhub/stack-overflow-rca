@@ -1,5 +1,5 @@
 import { getToken } from "./AuthService";
-const API_URL = import.meta.env.VITE_BACKEND_API_URL;
+const API_URL = "http://localhost:51400/api";
 
 export const getAllQuestions = async () => {
   const res = await fetch(`${API_URL}/questions/get-all`, {
