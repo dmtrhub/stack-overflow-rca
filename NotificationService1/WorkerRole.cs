@@ -45,7 +45,7 @@ namespace NotificationService
             string connectionString = CloudConfigurationManager.GetSetting("DataConnectionString");
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(connectionString);
             CloudQueueClient queueClient = storageAccount.CreateCloudQueueClient();
-            _queue = queueClient.GetQueueReference("notifications");
+            _queue = queueClient.GetQueueReference("top-answer-notification");
             _queue.CreateIfNotExists();
 
             StartHealthMonitoringEndpoint();
