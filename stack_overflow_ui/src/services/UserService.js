@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.VITE_BACKEND_API_URL;
+const API_URL = "http://localhost:51400/api";
 
 const createRegisterRequestForm = (formData) => {
   const form = new FormData();

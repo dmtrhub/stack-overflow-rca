@@ -1,6 +1,6 @@
 import { getToken } from "./AuthService";
 
-const API_URL = import.meta.env.VITE_BACKEND_API_URL;
+const API_URL = "http://localhost:51400/api";
 
 export const voteForAnswer = async (answerId) => {
   const response = await fetch(`${API_URL}/vote/create/${answerId}`, {
