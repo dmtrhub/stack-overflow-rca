@@ -4,10 +4,11 @@ using Data.Repositories;
 using Microsoft.WindowsAzure.ServiceRuntime;
 using System;
 using System.Diagnostics;
-using System.IO;
 using System.Net.Http;
+using System.ServiceModel;
 using System.Threading;
 using System.Threading.Tasks;
+using HealthMonitoringService_WorkerRole;
 
 namespace HealthMonitoringService
 {
@@ -19,22 +20,18 @@ namespace HealthMonitoringService
         private HttpClient _httpClient;
         private IEmailService _emailService;
         private string _connectionString;
-        private readonly string rootPath = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\..\.."));
+        private ServiceHost _wcfServiceHost;
 
         public override bool OnStart()
         {
-            string logFilePath = Path.Combine(rootPath, "emails.log");
-            Trace.Listeners.Add(new TextWriterTraceListener(logFilePath));
-            Trace.Listeners.Add(new ConsoleTraceListener());
-            Trace.AutoFlush = true;
+            Trace.WriteLine("HealthMonitoringService starting...");
 
             _connectionString = RoleEnvironment.GetConfigurationSettingValue("DataConnectionString");
 
             _healthRepo = new HealthCheckRepository(_connectionString);
             _alertRepo = new AlertEmailRepository(_connectionString);
 
-            var apiServer = new AdminApiServer("http://localhost:5003/", _alertRepo);
-            apiServer.Start();
+            StartWcfService();
 
             _httpClient = new HttpClient();
 
@@ -49,7 +46,26 @@ namespace HealthMonitoringService
             // Timer na 4 sekunde
             _timer = new Timer(async _ => await CheckServicesAsync(), null, TimeSpan.Zero, TimeSpan.FromSeconds(4));
 
+            Trace.WriteLine("HealthMonitoringService started successfully");
             return base.OnStart();
+        }
+
+        private void StartWcfService()
+        {
+            try
+            {
+                var wcfService = new EmailSubscriptionService(_alertRepo);
+                _wcfServiceHost = new ServiceHost(wcfService);
+
+                _wcfServiceHost.Open();
+
+                Trace.WriteLine("WCF Service started ");
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine($"Error starting WCF service: {ex.Message}");
+                throw;
+            }
         }
 
         private async Task CheckServicesAsync()
@@ -70,13 +86,16 @@ namespace HealthMonitoringService
                     // Timeout 3 sekunde da ne visi
                     var cts = new CancellationTokenSource(TimeSpan.FromSeconds(3));
                     var response = await _httpClient.GetAsync(url, cts.Token);
-                    Console.WriteLine($"{url} -> {(int)response.StatusCode} {response.ReasonPhrase}");
+
+                    Trace.WriteLine($"{url} -> {(int)response.StatusCode} {response.ReasonPhrase}");
+
                     if (!response.IsSuccessStatusCode)
                         status = "NOT_OK";
                 }
-                catch
+                catch (Exception ex)
                 {
                     status = "NOT_OK";
+                    Trace.WriteLine($"Error checking service {serviceName}: {ex.Message}");
                 }
 
                 // Log u tabelu HealthCheck
@@ -85,7 +104,16 @@ namespace HealthMonitoringService
                     Status = status,
                     ServiceName = serviceName
                 };
-                await _healthRepo.InsertHealthCheckAsync(health);
+
+                try
+                {
+                    await _healthRepo.InsertHealthCheckAsync(health);
+                    Trace.WriteLine($"Health check recorded for {serviceName}: {status}");
+                }
+                catch (Exception ex)
+                {
+                    Trace.WriteLine($"Error recording health check for {serviceName}: {ex.Message}");
+                }
 
                 if (status == "NOT_OK")
                 {
@@ -103,20 +131,35 @@ namespace HealthMonitoringService
 
         private async Task SendAlertsAsync(string service)
         {
-            var emails = await _alertRepo.GetAllEmailsAsync();
-            foreach (var email in emails)
+            try
             {
-                string subject = $"[ALERT] {service} DOWN";
-                string body = $"Servis {service} nije dostupan. Proverite status.";
+                var emails = await _alertRepo.GetAllEmailsAsync();
+                Trace.WriteLine($"Sending alerts for {service} to {emails.Count} emails");
 
-                await _emailService.SendEmailAsync(email, subject, body);
-                Trace.TraceInformation($"Email poslat: {email}, Subject: {subject}, Body: {body}");
+                foreach (var email in emails)
+                {
+                    string subject = $"[ALERT] {service} DOWN";
+                    string body = $"Servis {service} nije dostupan. Proverite status.";
+
+                    await _emailService.SendEmailAsync(email, subject, body);
+                    Trace.WriteLine($"Alert email sent to: {email}, Service: {service}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine($"Error sending alerts for {service}: {ex.Message}");
             }
         }
 
         public override void OnStop()
         {
+            Trace.WriteLine("HealthMonitoringService stopping...");
+
             _timer?.Dispose();
+            _wcfServiceHost?.Close();
+            _httpClient?.Dispose();
+
+            Trace.WriteLine("HealthMonitoringService stopped");
             base.OnStop();
         }
     }
