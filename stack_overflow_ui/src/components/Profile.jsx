@@ -30,7 +30,7 @@ const Profile = () => {
   };
 
   const handleEdit = (id) => {
-    navigate(`/question/${id}/edit`);
+    navigate(`/question/${id}/modify`);
   };
 
   return (
